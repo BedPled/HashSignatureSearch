@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -83,14 +84,18 @@ public class Controller {
     @FXML
     private ChoiceBox<String> allFiles;
 
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Text textError;
 
     String[] sign;
-    HashTable[] hashTables;
     String Path;
+    HashTable[] hashTables;
+    int number = 0;
     boolean check1 = false;
     boolean check2 = false;
-//    HashTable hashtable;
-    int countHashFile = 0;
 
     @FXML
     void initialize() {
@@ -107,127 +112,159 @@ public class Controller {
 
         hashTables = new HashTable[10];
         // Десериализация 10 словарей
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Распаковка словаря " + i);
-            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Словарь " + i + ".dat")))
+        for (int i = 0; i < 10; i++) {
+            System.out.print("Распаковка словаря " + (i + 1) + " - ");
+            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Словарь " + (i + 1) + ".dat")))
             {
-                hashTables[i]  = (HashTable)ois.readObject();
+                //hashTables[i] = new HashTable(10,sign);
+                hashTables[i] = (HashTable)ois.readObject();
                 //System.out.println(Arrays.toString(hashTables[i].table)); // вывод всего что есть
-                System.out.println("Словарь " + i + " распакован\n");
+                System.out.println("Словарь " + (i + 1) + " распакован\n");
             }
             catch(Exception ex){
                 System.out.println(ex.getMessage() + "\n");
             }
         }
 
-//        allFiles.setOnAction(e -> {
-//            System.out.println(allFiles.getValue());
-//            // замена параметра для работы с поиском (switch case)
-//        });
+        // кнопка сохранения таблицы
+        butTable.setOnAction(e -> {
 
-//        butTable.setOnAction(e -> {
-//
-//            sign = new String[10];
-//            sign[0] = MyTable1.getText();
-//            sign[1] = MyTable2.getText();
-//            sign[2] = MyTable3.getText();
-//            sign[3] = MyTable4.getText();
-//            sign[4] = MyTable5.getText();
-//            sign[5] = MyTable6.getText();
-//            sign[6] = MyTable7.getText();
-//            sign[7] = MyTable8.getText();
-//            sign[8] = MyTable9.getText();
-//            sign[9] = MyTable10.getText();
-//
-//            System.out.println(Arrays.toString(sign));
-//            check1 = true;
-//            hashtable = new HashTable(10,sign);
-//
-//            // Десериализация
-////            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("cipherHashTable" + countHashFile + ".dat")))
-////            {
-////                HashTable hashtable=(HashTable)ois.readObject();
-////                // вывод всего что есть
-////                System.out.println(Arrays.toString(hashtable.table));
-////            }
-////            catch(Exception ex){
-////
-////                System.out.println(ex.getMessage());
-////            }
-//        });
-//
-//        butPath.setOnAction(actionEvent -> {
-//            if (check1) {
-//                Path = MyFilePath.getText();
-//
-//              hashtable = new HashTable(10,sign);
-//              hashtable.parse(Path); // считали слова из файла и закодировали под нашу таблицу кодирования
-//
-//                System.out.println(Arrays.toString(hashtable.table));
-//                System.out.println("ПУПАЛУПА");
-////                try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("cipherHashTable" + countHashFile + ".dat"))) {
-////                    countHashFile++;
-////                    //hashtable = new HashTable(10,sign);
-////                    System.out.println("ПУПАЛУПА");
-////                    hashtable.parse(Path); // считали слова из файла и закодировали под нашу таблицу кодирования
-////                    oos.writeObject(hashtable);
-////                }
-////                catch(Exception ex){
-////                    System.out.println(ex.getMessage());
-////                }
-//
-//
-//                System.out.println(Path);
-//                check2 = true;
-//            } else {
-//                MyFilePath.setText("Загрузите таблицу кодировани");
-//            }
-//        });
-//
-//        butWord.setOnAction(actionEvent -> {
-//            if (check2) {
-//                String Word;
-//                Word = MyInWord.getText();
-//                Word = Word.toLowerCase(Locale.ROOT);
-//
-//
-//                long startTime;
-//                long endTime;
-//                long startEndTime = 0;
-//                int[] WordLev = hashtable.search(Word);
-//                // поиск
-//
-////                for (int i = 0; i < 100; i++) {
-//                    startTime = System.nanoTime();//System.currentTimeMillis();
-//                    hashtable.search(Word);
-//                    endTime = System.nanoTime();//System.currentTimeMillis();
-////                    startEndTime += endTime - startTime;
-////                }
-////                startEndTime = startEndTime / 100;
-//
-//
-//                XYChart.Series<String, Number> timeSeries = new XYChart.Series<>();
-//                timeSeries.setName(Word);
-//                timeSeries.getData().add(new XYChart.Data<>("Время", endTime - startTime));
-//                System.out.println(endTime - startTime);
-//                TimeBar.getData().add(timeSeries);
-//
-//                XYChart.Series<String, Number> wordSeries = new XYChart.Series<>();
-//                wordSeries.setName(Word);
-//                wordSeries.getData().add(new XYChart.Data<>("Кол-во слов", WordLev[0]));
-//                System.out.println(WordLev[0]);
-//                WordBar.getData().add(wordSeries);
-//
-//                XYChart.Series<String, Number> levSeries = new XYChart.Series<>();
-//                levSeries.setName(Word);
-//                levSeries.getData().add(new XYChart.Data<>("Вызовы Растояния Левенштейна", WordLev[1]));
-//                System.out.println(WordLev[1]);
-//                LevBar.getData().add(levSeries);
-//
-//                System.out.println(Word);
-//            } else {
-//                MyInWord.setText("Загрузите таблицу кодировани и словарь");
-//            }
-//        });
+            sign = new String[10];
+            sign[0] = MyTable1.getText();
+            sign[1] = MyTable2.getText();
+            sign[2] = MyTable3.getText();
+            sign[3] = MyTable4.getText();
+            sign[4] = MyTable5.getText();
+            sign[5] = MyTable6.getText();
+            sign[6] = MyTable7.getText();
+            sign[7] = MyTable8.getText();
+            sign[8] = MyTable9.getText();
+            sign[9] = MyTable10.getText();
+
+            System.out.println(Arrays.toString(sign));
+            if (!sign[0].isEmpty() || !sign[1].isEmpty()
+                    || !sign[2].isEmpty() || !sign[3].isEmpty()
+                    || !sign[4].isEmpty() || !sign[5].isEmpty()
+                    || !sign[6].isEmpty() || !sign[7].isEmpty()
+                    || !sign[8].isEmpty() || !sign[9].isEmpty())
+            {
+                check1 = true;
+                textError.setText("Таблица сохранена");
+            } else {
+                textError.setText("Таблица пуста");
+            }
+
+
+        });
+
+        // кнопка сохранения пути
+        butPath.setOnAction(actionEvent -> {
+                Path = MyFilePath.getText();
+                System.out.println(Path);
+                if (!Path.isEmpty()) {
+                    check2 = true;
+                    textError.setText("Путь сохранён");
+                } else {
+                    textError.setText("Путь пуст");
+                }
+
+        });
+
+        // кнопка сохранения
+        saveButton.setOnAction(e -> {
+            number = 0;
+            // поверка выбора поля сохранения
+                // проверка наличия таблицы
+                    // проверка наличия пути
+                    // сохраняем в массив hashtables
+                    // сереализуем
+            if (allFiles.getValue() != null) {
+                if(check1 && check2) {
+                    textError.setText("Сохраняем словарь");
+                    for (int i = 1; i <= 10; i++) { // определение словаря в массиве
+                        if (allFiles.getValue().equals("Словарь " + i)) {
+                            number = i;
+                            System.out.println(number);
+                        }
+                    }
+                    //парсинг
+                    hashTables[number - 1] = new HashTable(10, sign);
+                    hashTables[number - 1].parse(Path);
+
+                    //сереализация
+                    try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Словарь " + number + ".dat"))) {
+                        oos.writeObject(hashTables[number - 1]);
+                    }
+                    catch(Exception ex){
+                        System.out.println(ex.getMessage());
+                    }
+
+                    textError.setText("Словарь сохранён в поле " + number);
+                } else {
+                    textError.setText("Загрузите таблицу и путь");
+                }
+            } else {
+                textError.setText("Выберите словарь для сохранения");
+            }
+        });
+
+        // кнопка поиска слова
+        butWord.setOnAction(e -> {
+            textError.setText("");
+            number = 0;
+            for (int i = 1; i <= 10; i++) { // определение словаря в массиве
+                if (allFiles.getValue().equals("Словарь " + i)) {
+                    number = i;
+                    System.out.println(number);
+                }
+            }
+
+            if (/*!allFiles.getValue().equals("") &&*/ hashTables[number-1] != null) {
+                String Word;
+                Word = MyInWord.getText();
+                Word = Word.toLowerCase(Locale.ROOT);
+
+
+                long startTime;
+                long endTime;
+                long startEndTime = 0;
+                int[] WordLev = hashTables[number - 1].search(Word);
+                // поиск
+
+                for (int i = 0; i < 25; i++) {
+                    startTime = System.nanoTime();//System.currentTimeMillis();
+                    hashTables[number - 1].search(Word);
+                    endTime = System.nanoTime();//System.currentTimeMillis();
+                    startEndTime += endTime - startTime;
+                }
+                startEndTime = startEndTime / 25;
+
+
+                XYChart.Series<String, Number> timeSeries = new XYChart.Series<>();
+                timeSeries.setName("Словарь " + number + ": " + Word);
+                timeSeries.getData().add(new XYChart.Data<>("Время", startEndTime/*endTime - startTime*/));
+                System.out.println(startEndTime/*endTime - startTime*/);
+                TimeBar.getData().add(timeSeries);
+
+                XYChart.Series<String, Number> wordSeries = new XYChart.Series<>();
+                wordSeries.setName("Словарь " + number + ": " + Word);
+                wordSeries.getData().add(new XYChart.Data<>("Кол-во слов", WordLev[0]));
+                System.out.println(WordLev[0]);
+                WordBar.getData().add(wordSeries);
+
+                XYChart.Series<String, Number> levSeries = new XYChart.Series<>();
+                levSeries.setName("Словарь " + number + ": " + Word);
+                levSeries.getData().add(new XYChart.Data<>("Вызовы Растояния Левенштейна", WordLev[1]));
+                System.out.println(WordLev[1]);
+                LevBar.getData().add(levSeries);
+
+                System.out.println(Word);
+
+            } else {
+                textError.setText("Выберите не пустой словарь");
+            }
+        });
+
+
     }
 }

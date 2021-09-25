@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
 <GridPane alignment="center" hgap="10" prefHeight="586.0" prefWidth="1045.0" vgap="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <columnConstraints>
@@ -61,6 +62,8 @@
                </yAxis>
             </BarChart>
             <ChoiceBox fx:id="allFiles" layoutX="28.0" layoutY="337.0" prefHeight="26.0" prefWidth="150.0" />
+            <Text fx:id="textError" layoutX="291.0" layoutY="558.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="646.9830722808838" />
+            <Button fx:id="saveButton" layoutX="28.0" layoutY="517.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Сохранить" />
          </children>
       </AnchorPane>
    </children>

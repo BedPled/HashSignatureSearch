@@ -14,14 +14,7 @@ public class HashTable implements Serializable {
     //int isUse[];
     LinkedList<String>[] table;
 
-//    @Override
-//    public String toString() {
-//        return "SavedGame{" +
-//                "territoriesInfo=" + Arrays.toString(territoriesInfo) +
-//                ", resourcesInfo=" + Arrays.toString(resourcesInfo) +
-//                ", diplomacyInfo=" + Arrays.toString(diplomacyInfo) +
-//                '}';
-//    }
+
 
     HashTable(int signLen, String[] sign) {
         this.sign = new String[signLen];

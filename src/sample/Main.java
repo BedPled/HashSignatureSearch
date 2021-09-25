@@ -30,6 +30,12 @@ public class Main extends Application {
        // Scanner in = new Scanner(System.in);
 
         launch(args);
+
+    }
+}
+
+
+
 //        String[] sign = new String[10];
 //
 //        sign[0] = "абв";
@@ -59,7 +65,7 @@ public class Main extends Application {
 //        }
 
 
-        // Десериализация
+// Десериализация
 //        HashTable hashtable;
 //            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Словарь 0"  + ".dat")))
 //            {
@@ -72,6 +78,3 @@ public class Main extends Application {
 //            }
 
 //        System.out.println(Arrays.toString(hashtable.table));
-
-    }
-}
